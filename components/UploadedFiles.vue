@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col gap-1 mt-2">
-    <div class="flex items-center w-full gap-2" v-for="file in files">
+    <div class="flex items-center w-full gap-2" v-for="(file, index) in files">
       <div class="flex justify-center items-center w-8 h-8 border rounded-lg">
         <Icon name="i-vscode-icons:file-type-excel" class="text-xl" />
       </div>
@@ -24,6 +24,7 @@
           <Icon
             name="i-solar:trash-bin-trash-outline"
             class="text-zinc-500 cursor-pointer duration-300 hover:text-red-400 text-lg"
+            @click="deleteFile(index)"
           />
         </div>
       </div>
@@ -32,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-defineProps(["files"]);
+const props = defineProps(["files"]);
 
 function formatFileSize(bytes: number) {
   const kilobyte = 1024;
@@ -48,5 +49,15 @@ function formatFileSize(bytes: number) {
   } else {
     return (bytes / gigabyte).toFixed(2) + " GB";
   }
+}
+
+function deleteFile(index: number) {
+  const confirm = window.confirm("Deseja apagar permanentemente esse arquivo?");
+
+  if (!confirm) {
+    return;
+  }
+
+  props.files.splice(index, 1);
 }
 </script>

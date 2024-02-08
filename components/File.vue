@@ -15,11 +15,9 @@
       </div>
 
       <div class="flex items-center">
-        <Icon
-          name="svg-spinners:eclipse"
-          class="text-zinc-400"
-          v-if="file.loading < 100"
-        />
+        <span class="text-xs text-zinc-500" v-if="file.loading < 100">{{
+          file.estimated
+        }}</span>
 
         <div class="flex justify-end items-center gap-1" v-else>
           <Icon
