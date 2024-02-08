@@ -1,28 +1,42 @@
 <template>
-  <div class="flex flex-col gap-1 mt-2">
+  <div class="flex flex-col mt-2">
     <div class="flex items-center w-full gap-2">
-      <div class="flex justify-center items-center w-8 h-8 border rounded-lg">
+      <div class="flex justify-center items-center w-10 h-10 border rounded-lg">
         <Icon name="i-vscode-icons:file-type-excel" class="text-xl" />
       </div>
 
       <div class="text-sm flex-1 truncate">
-        <p class="text-zinc-800 text-sm leading-4 truncate w-48">
-          {{ file.name }}
-        </p>
-        <p class="text-xs font-light text-zinc-500 leading-4">
-          {{ formatFileSize(file.size) }}
-        </p>
+        <div class="flex flex-1 justify-between">
+          <p class="text-zinc-800 text-sm leading-4 truncate w-52">
+            {{ file.name }}
+          </p>
+          <p class="text-xs font-light text-zinc-500 leading-4">
+            {{ formatFileSize(file.size) }}
+          </p>
+        </div>
+
+        <div class="flex gap-2 w-full items-center mt-2">
+          <div class="w-full h-1 rounded-full bg-zinc-100 overflow-hidden">
+            <div
+              class="h-full bg-violet-500 rounded-full"
+              :style="{ width: file.loading + '%' }"
+            ></div>
+          </div>
+          <div class="flex gap-1 items-center text-zinc-500 text-xs leading-3">
+            <span class="text-violet-500">{{ file.loading }}%</span> /
+            {{ file.estimated }}
+          </div>
+        </div>
       </div>
 
       <div class="flex items-center">
-        <span class="text-xs text-zinc-500" v-if="file.loading < 100">{{
-          file.estimated
-        }}</span>
-
-        <div class="flex justify-end items-center gap-1" v-else>
+        <div
+          class="flex justify-end items-center gap-1"
+          v-if="file.loading === 100"
+        >
           <Icon
             name="material-symbols:check-circle-rounded"
-            class="text-teal-500"
+            class="text-violet-500"
           />
 
           <Icon
@@ -31,16 +45,6 @@
           />
         </div>
       </div>
-    </div>
-
-    <div class="flex gap-2.5 w-full items-center mt-1">
-      <div class="w-full h-1.5 rounded-full bg-zinc-100 overflow-hidden">
-        <div
-          class="h-full bg-teal-500 rounded-full"
-          :style="{ width: file.loading + '%' }"
-        ></div>
-      </div>
-      <span class="text-xs text-zinc-600">{{ file.loading }}%</span>
     </div>
   </div>
 </template>

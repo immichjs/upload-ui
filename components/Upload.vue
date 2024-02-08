@@ -1,35 +1,39 @@
 <template>
-  <section>
-    <div
-      class="flex justify-center items-center border-2 rounded-xl border-dashed h-20 duration-200 group"
-      :class="{
-        'border-red-400 cursor-not-allowed': disableNewUpload,
-        'cursor-pointer hover:border-violet-500': !disableNewUpload,
-      }"
-      @click="fileInput?.click()"
-    >
-      <input
-        type="file"
-        ref="fileInput"
-        class="hidden"
-        :multiple="false"
-        accept=".xlsx"
-        @change="uploadFile($event)"
-        :disabled="disableNewUpload"
-      />
-      <Icon
-        name="i-solar:cloud-upload-linear"
-        class="text-3xl duration-200"
+  <ClientOnly>
+    <section class="flex flex-col gap-2 h-96 overflow-hidden box-border">
+      <div
+        class="flex justify-center items-center border-2 rounded-xl border-dashed min-h-[6rem] duration-200 group"
         :class="{
-          'text-red-400': disableNewUpload,
-          'group-hover:text-violet-500 text-slate-300': !disableNewUpload,
+          'border-red-400 cursor-not-allowed': disableNewUpload,
+          'cursor-pointer hover:border-violet-500': !disableNewUpload,
         }"
-      />
-    </div>
+        @click="fileInput?.click()"
+      >
+        <input
+          type="file"
+          ref="fileInput"
+          class="hidden"
+          :multiple="false"
+          accept=".xlsx"
+          @change="uploadFile($event)"
+          :disabled="disableNewUpload"
+        />
+        <Icon
+          name="i-solar:cloud-upload-linear"
+          class="text-3xl duration-200"
+          :class="{
+            'text-red-400': disableNewUpload,
+            'group-hover:text-violet-500 text-slate-300': !disableNewUpload,
+          }"
+        />
+      </div>
 
-    <File v-for="file in files" :file="file" />
-    <UploadedFiles :files="uploadFiles" />
-  </section>
+      <div class="h-full overflow-y-auto">
+        <File v-for="file in files" :file="file" />
+        <UploadedFiles :files="uploadFiles" />
+      </div>
+    </section>
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>
@@ -45,15 +49,15 @@ async function uploadFile(event: any) {
   const file = input.files?.[0];
   if (!file) return;
 
-  if (
-    file.type !==
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-  ) {
-    event.target.files = null;
-    alert("Tipo de arquivo não suportado");
+  // if (
+  //   file.type !==
+  //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  // ) {
+  //   event.target.files = null;
+  //   alert("Tipo de arquivo não suportado");
 
-    return;
-  }
+  //   return;
+  // }
 
   disableNewUpload.value = true;
 
